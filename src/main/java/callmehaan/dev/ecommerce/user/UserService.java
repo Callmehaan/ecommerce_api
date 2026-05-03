@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -31,7 +33,7 @@ public class UserService {
                 .username(userDto.username())
                 .email(userDto.email())
                 .password(passwordEncoder.encode(userDto.password()))
-                .role(Role.USER)
+                .roles(Set.of(Role.USER))
                 .build();
 
         userRepository.save(user);
@@ -58,6 +60,9 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         user.setUsername(userDto.username() != null ? userDto.username() : user.getUsername());
         user.setPassword(userDto.password() != null ? passwordEncoder.encode(userDto.password()) : user.getPassword());
+        if(!userDto.roles().isEmpty()) {
+            user.getRoles().addAll(userDto.roles());
+        }
 
         return userRepository.save(user);
     }
