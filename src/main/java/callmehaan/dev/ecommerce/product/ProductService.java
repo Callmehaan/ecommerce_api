@@ -106,7 +106,7 @@ public class ProductService {
                 });
 
         Category category = this.categoryService.getCategory(categoryId);
-        product.addCategories(Set.of(category));
+        product.addCategory(category);
 
         this.productRepository.save(product);
     }

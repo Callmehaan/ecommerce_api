@@ -80,10 +80,14 @@ public class Product {
         image.setProduct(this);
     }
 
-    public void addCategories(Set<Category> categories) {
-        if(categories == null) {
-            return;
+    public void addCategory(Category category) {
+        ArrayList<Category> categories = new ArrayList<>();
+
+        while(category != null) {
+            categories.add(category);
+            category = category.getParent();
         }
+        
         this.categories.addAll(categories);
     }
 }
